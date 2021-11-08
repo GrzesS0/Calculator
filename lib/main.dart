@@ -95,19 +95,15 @@ class _MyButtonState extends State<MyButton> {
       ),
       onTap: () {
         var state = Provider.of<Tekst>(context, listen: false);
-        if(widget.znak=="d"){
-          if(state.tekst!="")
-          state.tekst=state.tekst.substring(0,state.tekst.length-1);
+        if (widget.znak == "d") {
+          if (state.tekst != "")
+            state.tekst = state.tekst.substring(0, state.tekst.length - 1);
+        } else {
+          if (widget.znak == "c") {
+            state.tekst = "";
+          } else
+            state.tekst += widget.znak;
         }
-        else
-          {
-            if(widget.znak=="c")
-              {
-                state.tekst="";
-              }
-            else
-        state.tekst += widget.znak;
-          }
       },
     );
   }
@@ -134,51 +130,79 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String calculateTotalValue() {
+    var state = Provider.of<Tekst>(context, listen: true);
+    String tekst = state.tekst;
+    List<double> liczby = [];
+    String znaki = "";
+    while (tekst != "") {
+      List<int> z = [
+        tekst.indexOf("+"),
+        tekst.indexOf("-"),
+        tekst.indexOf("×"),
+        tekst.indexOf("÷")
+      ];
+      z.sort();
+      int y = -1;
+      for (int i = 0; i < 4; i++)
+        if (z[i] != -1) {
+          y = z[i];
+          break;
+        }
+      if (y == -1) y = tekst.length;
+      liczby.add(double.parse(tekst.substring(0, y)));
+      if (y != tekst.length) {
+        znaki += tekst.substring(y, y + 1);
+        y++;
+      }
+      tekst = tekst.substring(y);
+    }
+    tekst = state.tekst;
+    tekst += " = ";
+    if (liczby.length > znaki.length)
+      while (liczby.length != 1) {
+        int x = 0;
+        if (znaki.indexOf("×") != -1 || znaki.indexOf("÷") != -1) {
+          x = znaki.indexOf("×");
+          if (x == -1 || (znaki.indexOf("÷") != -1 && znaki.indexOf("÷") < x))
+            x = znaki.indexOf("÷");
+          if (znaki[x] == "×")
+            liczby[x] = liczby[x] * liczby[x + 1];
+          else
+            liczby[x] = liczby[x] / liczby[x + 1];
+        } else {
+          if (znaki[0] == "+")
+            liczby[x] = liczby[x] + liczby[x + 1];
+          else
+            liczby[x] -= liczby[x + 1];
+        }
+        znaki = znaki.substring(0, x) + znaki.substring(x + 1);
+        liczby.removeAt(x + 1);
+      }
+    tekst += liczby[0].toString();
+    return tekst;
+  }
+
   @override
   Widget build(BuildContext context) {
     var state = Provider.of<Tekst>(context, listen: true);
-    String tekst="";
-    if(state.tekst!=""){
-      tekst = state.tekst;
-      List<double>liczby = [];
-      String znaki = "";
-      while(tekst!=""){
-        List <int> z = [tekst.indexOf("+"),tekst.indexOf("-"),tekst.indexOf("×"),tekst.indexOf("÷")];
-        z.sort();
-        int y=-1;
-        for(int i=0;i<4;i++)if(z[i]!=-1) {y=z[i]; break;}
-        if(y==-1)y=tekst.length;
-        liczby.add(double.parse(tekst.substring(0,y)));
-        if(y!=tekst.length) {
-          znaki += tekst.substring(y,y+1);
-          y++;
-        }
-        tekst=tekst.substring(y);
-      }
-      tekst = state.tekst;
-      tekst+=" = ";
-      if(liczby.length>znaki.length)
-      while(liczby.length!=1){
-        int x=0;
-        if(znaki.indexOf("×")!=-1 || znaki.indexOf("÷")!=-1){
-          x=znaki.indexOf("×");
-          if(x==-1||(znaki.indexOf("÷")!=-1&&znaki.indexOf("÷")<x))x=znaki.indexOf("÷");
-          if(znaki[x]=="×")liczby[x] = liczby[x]*liczby[x+1];
-          else liczby[x] = liczby[x]/liczby[x+1];
-        }else{
-          if(znaki[0]=="+")liczby[x]=liczby[x]+liczby[x+1];
-          else liczby[x]-=liczby[x+1];
-        }
-           znaki = znaki.substring(0,x)+znaki.substring(x+1);
-        liczby.removeAt(x+1);
-      }
-      tekst+=liczby[0].toString();
+    String tekst = "";
+    if (state.tekst != "") {
+      tekst = calculateTotalValue();
     }
     return Scaffold(
       appBar: AppBar(
         title: Center(
           child: Text(
             widget.title,
+            style: TextStyle(
+                fontSize: 31,
+                foreground: Paint()
+                  ..shader = LinearGradient(colors: [
+                    Colors.yellowAccent,
+                    Colors.redAccent,
+                    Colors.purpleAccent
+                  ]).createShader(Rect.fromLTWH(60.0, 0.0, 400.0, 300.0))),
             textAlign: TextAlign.center,
           ),
         ),
@@ -187,7 +211,19 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Expanded(child: Text(tekst)),
+            Expanded(
+              child: InteractiveViewer(
+                scaleEnabled: true,
+                maxScale: 3,
+                child: Center(
+                    child: Text(
+                  tekst,
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                )),
+              ),
+            ),
             MyRow(Lista: ["1", "2", "3", "+"]),
             MyRow(Lista: ["4", "5", "6", "-"]),
             MyRow(Lista: ["7", "8", "9", "×"]),
