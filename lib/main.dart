@@ -140,21 +140,39 @@ class _MyHomePageState extends State<MyHomePage> {
     String tekst="";
     if(state.tekst!=""){
       tekst = state.tekst;
-      List<double>x = [];
+      List<double>liczby = [];
+      String znaki = "";
       while(tekst!=""){
-        List <int> znaki = [tekst.indexOf("+"),tekst.indexOf("-"),tekst.indexOf("×"),tekst.indexOf("÷")];
-        znaki.sort();
+        List <int> z = [tekst.indexOf("+"),tekst.indexOf("-"),tekst.indexOf("×"),tekst.indexOf("÷")];
+        z.sort();
         int y=-1;
-        for(int i=0;i<4;i++)if(znaki[i]!=-1) {y=znaki[i]; break;}
+        for(int i=0;i<4;i++)if(z[i]!=-1) {y=z[i]; break;}
         if(y==-1)y=tekst.length;
-        x.add(double.parse(tekst.substring(0,y)));
-        if(y!=tekst.length)y++;
-        print(x);
-        print(tekst.substring(y));
+        liczby.add(double.parse(tekst.substring(0,y)));
+        if(y!=tekst.length) {
+          znaki += tekst.substring(y,y+1);
+          y++;
+        }
         tekst=tekst.substring(y);
       }
       tekst = state.tekst;
       tekst+=" = ";
+      if(liczby.length>znaki.length)
+      while(liczby.length!=1){
+        int x=0;
+        if(znaki.indexOf("×")!=-1 || znaki.indexOf("÷")!=-1){
+          x=znaki.indexOf("×");
+          if(x==-1||(znaki.indexOf("÷")!=-1&&znaki.indexOf("÷")<x))x=znaki.indexOf("÷");
+          if(znaki[x]=="×")liczby[x] = liczby[x]*liczby[x+1];
+          else liczby[x] = liczby[x]/liczby[x+1];
+        }else{
+          if(znaki[0]=="+")liczby[x]=liczby[x]+liczby[x+1];
+          else liczby[x]-=liczby[x+1];
+        }
+           znaki = znaki.substring(0,x)+znaki.substring(x+1);
+        liczby.removeAt(x+1);
+      }
+      tekst+=liczby[0].toString();
     }
     return Scaffold(
       appBar: AppBar(
