@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 void main() => runApp(ChangeNotifierProvider.value(
       value: Tekst(),
-      child: MyApp(),
+      child: const MyApp(),
     ));
 
 class MyApp extends StatelessWidget {
@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyRow extends StatefulWidget {
-  const MyRow({Key? key, required this.Lista}) : super(key: key);
-  final List<String> Lista;
+  const MyRow({Key? key, required this.lista}) : super(key: key);
+  final List<String> lista;
 
   @override
   State<MyRow> createState() => _MyRowState();
@@ -35,10 +35,10 @@ class _MyRowState extends State<MyRow> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        MyButton(znak: widget.Lista[0]),
-        MyButton(znak: widget.Lista[1]),
-        MyButton(znak: widget.Lista[2]),
-        MyButton(znak: widget.Lista[3])
+        MyButton(znak: widget.lista[0]),
+        MyButton(znak: widget.lista[1]),
+        MyButton(znak: widget.lista[2]),
+        MyButton(znak: widget.lista[3])
       ],
     );
   }
@@ -63,7 +63,7 @@ class _MyButtonState extends State<MyButton> {
         decoration: BoxDecoration(
             color: Colors.white54,
             gradient: RadialGradient(
-                stops: [0, 0.5, 0.9],
+                stops: const [0, 0.5, 0.9],
                 radius: 0.8,
                 colors: [
                   Colors.grey.shade400,
@@ -94,17 +94,26 @@ class _MyButtonState extends State<MyButton> {
       onTap: () {
         var state = Provider.of<Tekst>(context, listen: false);
         if (widget.znak == "d") {
-          if (state.tekst != "")
+          if (state.tekst != "") {
             state.tekst = state.tekst.substring(0, state.tekst.length - 1);
+          }
         } else {
           if (widget.znak == "c") {
             state.tekst = "";
-          } else{
-            bool c=false;
-            ["×","÷","-","+"].forEach((element) {if(widget.znak == element)c=true;});
-            if(c){
-              c=false; ["×","÷","-","+"].forEach((element) {if(state.tekst.length==0||state.tekst[state.tekst.length-1] == element)c=true;});}
-            if(!c)state.tekst += widget.znak;
+          } else {
+            bool c = false;
+            for (int i = 0; i < 4; i++) {
+              if (widget.znak == ["×", "÷", "-", "+"][i]) c = true;
+            }
+            if (c) {
+              c = false;
+              for (int i = 0; i < 4; i++) {
+                if (state.tekst.isEmpty ||
+                    state.tekst[state.tekst.length - 1] ==
+                        ["×", "÷", "-", "+"][i]) c = true;
+              }
+            }
+            if (!c) state.tekst += widget.znak;
           }
         }
       },
@@ -147,11 +156,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ];
       z.sort();
       int y = -1;
-      for (int i = 0; i < 4; i++)
+      for (int i = 0; i < 4; i++) {
         if (z[i] != -1) {
           y = z[i];
           break;
         }
+      }
       if (y == -1) y = tekst.length;
       liczby.add(double.parse(tekst.substring(0, y)));
       if (y != tekst.length) {
@@ -162,26 +172,30 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     tekst = state.tekst;
     tekst += " = ";
-    if (liczby.length > znaki.length)
+    if (liczby.length > znaki.length) {
       while (liczby.length != 1) {
         int x = 0;
-        if (znaki.indexOf("×") != -1 || znaki.indexOf("÷") != -1) {
+        if (znaki.contains("×") || znaki.contains("÷")) {
           x = znaki.indexOf("×");
-          if (x == -1 || (znaki.indexOf("÷") != -1 && znaki.indexOf("÷") < x))
+          if (x == -1 || (znaki.contains("÷") && znaki.indexOf("÷") < x)) {
             x = znaki.indexOf("÷");
-          if (znaki[x] == "×")
+          }
+          if (znaki[x] == "×") {
             liczby[x] = liczby[x] * liczby[x + 1];
-          else
+          } else {
             liczby[x] = liczby[x] / liczby[x + 1];
+          }
         } else {
-          if (znaki[0] == "+")
+          if (znaki[0] == "+") {
             liczby[x] = liczby[x] + liczby[x + 1];
-          else
+          } else {
             liczby[x] -= liczby[x + 1];
+          }
         }
         znaki = znaki.substring(0, x) + znaki.substring(x + 1);
         liczby.removeAt(x + 1);
       }
+    }
     tekst += liczby[0].toString();
     return tekst;
   }
@@ -190,7 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     var state = Provider.of<Tekst>(context, listen: true);
     String tekst = "";
-    if (state.tekst != ""&& state.tekst!="błąd") {
+    if (state.tekst != "" && state.tekst != "błąd") {
       tekst = calculateTotalValue();
     }
     return Scaffold(
@@ -201,11 +215,12 @@ class _MyHomePageState extends State<MyHomePage> {
             style: TextStyle(
                 fontSize: 31,
                 foreground: Paint()
-                  ..shader = LinearGradient(colors: [
+                  ..shader = const LinearGradient(colors: [
                     Colors.yellowAccent,
                     Colors.redAccent,
                     Colors.purpleAccent
-                  ]).createShader(Rect.fromLTWH(60.0, 0.0, 400.0, 300.0))),
+                  ]).createShader(
+                      const Rect.fromLTWH(60.0, 0.0, 400.0, 300.0))),
             textAlign: TextAlign.center,
           ),
         ),
@@ -221,16 +236,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Center(
                     child: Text(
                   tekst,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                   ),
                 )),
               ),
             ),
-            MyRow(Lista: ["1", "2", "3", "+"]),
-            MyRow(Lista: ["4", "5", "6", "-"]),
-            MyRow(Lista: ["7", "8", "9", "×"]),
-            MyRow(Lista: ["c", "0", "d", "÷"]),
+            const MyRow(lista: ["1", "2", "3", "+"]),
+            const MyRow(lista: ["4", "5", "6", "-"]),
+            const MyRow(lista: ["7", "8", "9", "×"]),
+            const MyRow(lista: ["c", "0", "d", "÷"]),
           ],
         ),
       ),
