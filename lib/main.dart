@@ -2,9 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(ChangeNotifierProvider.value(
+<<<<<<< e8a6a6073a9bedfe6adb7274cf57e86c8e256004
       value: Tekst(),
       child: const MyApp(),
     ));
+<<<<<<< e8a6a6073a9bedfe6adb7274cf57e86c8e256004
+=======
+<<<<<<< e8a6a6073a9bedfe6adb7274cf57e86c8e256004
+<<<<<<< e8a6a6073a9bedfe6adb7274cf57e86c8e256004
+=======
+=======
+>>>>>>> chyba dobrze
+=======
+  value: Tekst(),
+  child: const MyApp(),
+));
+>>>>>>> chyba dobrze
+<<<<<<< e8a6a6073a9bedfe6adb7274cf57e86c8e256004
+=======
+void main() {
+  runApp(const MyApp());
+}
+>>>>>>> Revert "Merge branch 'Grzegorz' into main"
+>>>>>>> Revert "Merge branch 'Grzegorz' into main"
+=======
+>>>>>>> chyba dobrze
+>>>>>>> chyba dobrze
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -74,6 +97,7 @@ class _MyButtonState extends State<MyButton> {
         child: Center(
           child: widget.znak == "c"
               ? Icon(
+<<<<<<< e8a6a6073a9bedfe6adb7274cf57e86c8e256004
                   Icons.delete_forever,
                   size: MediaQuery.of(context).size.width / 10,
                 )
@@ -89,6 +113,23 @@ class _MyButtonState extends State<MyButton> {
                           fontSize: MediaQuery.of(context).size.width / 8,
                           fontWeight: FontWeight.w800),
                     ),
+=======
+            Icons.delete_forever,
+            size: MediaQuery.of(context).size.width / 10,
+          )
+              : widget.znak == "d"
+              ? Icon(
+            Icons.backspace,
+            size: MediaQuery.of(context).size.width / 12,
+          )
+              : Text(
+            widget.znak,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width / 8,
+                fontWeight: FontWeight.w800),
+          ),
+>>>>>>> chyba dobrze
         ),
       ),
       onTap: () {
@@ -235,11 +276,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 maxScale: 3,
                 child: Center(
                     child: Text(
+<<<<<<< e8a6a6073a9bedfe6adb7274cf57e86c8e256004
                   tekst,
                   style: const TextStyle(
                     fontSize: 20,
                   ),
                 )),
+=======
+                      tekst,
+                      style: const TextStyle(
+                        fontSize: 20,
+                      ),
+                    )),
+>>>>>>> chyba dobrze
               ),
             ),
             const MyRow(lista: ["1", "2", "3", "+"]),
