@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -101,8 +99,13 @@ class _MyButtonState extends State<MyButton> {
         } else {
           if (widget.znak == "c") {
             state.tekst = "";
-          } else
-            state.tekst += widget.znak;
+          } else{
+            bool c=false;
+            ["×","÷","-","+"].forEach((element) {if(widget.znak == element)c=true;});
+            if(c){
+              c=false; ["×","÷","-","+"].forEach((element) {if(state.tekst.length==0||state.tekst[state.tekst.length-1] == element)c=true;});}
+            if(!c)state.tekst += widget.znak;
+          }
         }
       },
     );
@@ -187,7 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     var state = Provider.of<Tekst>(context, listen: true);
     String tekst = "";
-    if (state.tekst != "") {
+    if (state.tekst != ""&& state.tekst!="błąd") {
       tekst = calculateTotalValue();
     }
     return Scaffold(
