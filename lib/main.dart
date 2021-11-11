@@ -59,8 +59,8 @@ class _MyButtonState extends State<MyButton> {
     return InkWell(
       splashColor: Colors.red.shade900,
       child: Container(
-        width: MediaQuery.of(context).size.width / 4,
-        height: MediaQuery.of(context).size.width / 5,
+        width: MediaQuery.of(context).size.width / 5,
+        height: MediaQuery.of(context).size.width / 5.5,
         decoration: BoxDecoration(
             color: Colors.white54,
             gradient: RadialGradient(
@@ -103,15 +103,15 @@ class _MyButtonState extends State<MyButton> {
             state.tekst = "";
           } else {
             bool c = false;
-            for (int i = 0; i < 4; i++) {
-              if (widget.znak == ["×", "÷", "-", "+"][i]) c = true;
+            for (int i = 0; i < 5; i++) {
+              if (widget.znak == ["×", "÷", "-", "+","."][i]) c = true;
             }
             if (c) {
               c = false;
-              for (int i = 0; i < 4; i++) {
+              for (int i = 0; i < 5; i++) {
                 if (state.tekst.isEmpty ||
                     state.tekst[state.tekst.length - 1] ==
-                        ["×", "÷", "-", "+"][i]) c = true;
+                        ["×", "÷", "-", "+","."][i]) c = true;
               }
             }
             if (!c) state.tekst += widget.znak;
@@ -164,7 +164,9 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       }
       if (y == -1) y = tekst.length;
-      liczby.add(double.parse(tekst.substring(0, y)));
+      if(tekst[y-1]=="."){liczby.add(double.parse(tekst.substring(0, y-1)));}
+      else{
+      liczby.add(double.parse(tekst.substring(0, y)));}
       if (y != tekst.length) {
         znaki += tekst.substring(y, y + 1);
         y++;
@@ -246,7 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const MyRow(lista: ["1", "2", "3","(", ")"]),
             const MyRow(lista: ["4", "5", "6", "+", "-"]),
             const MyRow(lista: ["7", "8", "9", "×", "÷"]),
-            const MyRow(lista: ["c", "0", "d",","," "]),
+            const MyRow(lista: ["c", "0", "d","."," "]),
           ],
         ),
       ),
