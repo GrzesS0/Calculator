@@ -38,7 +38,8 @@ class _MyRowState extends State<MyRow> {
         MyButton(znak: widget.lista[0]),
         MyButton(znak: widget.lista[1]),
         MyButton(znak: widget.lista[2]),
-        MyButton(znak: widget.lista[3])
+        MyButton(znak: widget.lista[3]),
+        MyButton(znak: widget.lista[4])
       ],
     );
   }
@@ -242,10 +243,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     )),
               ),
             ),
-            const MyRow(lista: ["1", "2", "3", "+"]),
-            const MyRow(lista: ["4", "5", "6", "-"]),
-            const MyRow(lista: ["7", "8", "9", "×"]),
-            const MyRow(lista: ["c", "0", "d", "÷"]),
+            const MyRow(lista: ["1", "2", "3","(", ")"]),
+            const MyRow(lista: ["4", "5", "6", "+", "-"]),
+            const MyRow(lista: ["7", "8", "9", "×", "÷"]),
+            const MyRow(lista: ["c", "0", "d",","," "]),
           ],
         ),
       ),
