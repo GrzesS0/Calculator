@@ -163,20 +163,25 @@ class _MyHomePageState extends State<MyHomePage> {
     String tekst = tekstBazowy;
     if(["×", "÷", "-", "+", "."].any((element){ if(tekst[tekst.length-1]==element)return true;return false;})){return "$tekst = ?";}
     int ile = 0,start=-1,end=-1;
-    for (int i = 0; i < tekst.length; i++) {
+    int value = tekst.length;
+    for (int i = 0; i < value; i++) {
       if (tekst[i] == "(") ile++;
       if (tekst[i] == ")") ile--;
       if(ile!=0&&start==-1)start=i;
-      if(ile==0&&start!=-1){end=i;break;}
-    }
-    if(start!=-1){
-      if(end==-1)return "$tekst = ?";
-      String z1="",z2="",w;
-      if(["×", "÷", "-", "+"].any((element) {if(element==tekst[start])return false;return true;}))z1="×";
-      if(["×", "÷", "-", "+"].any((element) {if(tekst.length>end+1&&element==tekst[end+1])return false;return true;}))z2="×";
+      if(ile==0&&start!=-1){end=i;
+        String z1="",z2="",w;
+        if(["×", "÷", "-", "+"].any((element) {if(start!=0&&element==tekst[start])return false;return true;}))z1="×";
+        if(["×", "÷", "-", "+"].any((element) {if(tekst.length>end+1&&element==tekst[end+1])return false;return true;}))z2="×";
+        //tekst = tekst.substring(0,start)+calculateTotalValue(tekst.substring(start+1,end))+tekst.substring(end+1);
       w=calculateTotalValue(tekst.substring(start+1,end));
-      tekst = tekst.substring(0,start)+z1+w+z2+tekst.substring(end+1);
+        tekst = tekst.substring(0,start)+z1+w+z2+tekst.substring(end+1);
+      start=-1;
+      start=-1;
+      end=-1;
+      }
     }
+    if(start!=-1)return "$tekst = ?";
+
     List<double> liczby = [];
     String znaki = "";
     while (tekst != "") {
