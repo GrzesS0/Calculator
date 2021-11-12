@@ -104,7 +104,7 @@ class _MyButtonState extends State<MyButton> {
           } else {
             bool c = false;
             for (int i = 0; i < 6; i++) {
-              if (widget.znak == ["×", "÷", "-", "+", ".", ")"][i]) c = true;
+              if (widget.znak == ["×", "÷", "-", "+", ".", ")",][i]) c = true;
             }
             if (c) {
               c = false;
@@ -113,7 +113,12 @@ class _MyButtonState extends State<MyButton> {
                     state.tekst[state.tekst.length - 1] ==
                         ["×", "÷", "-", "+", "."][i]) c = true;
               }
-              if(widget.znak==")"){if((state.tekst.isEmpty || state.tekst[state.tekst.length - 1] == "("))c=true;
+    if(widget.znak=="."){if((state.tekst.isEmpty || state.tekst[state.tekst.length - 1] == "("))c=true;}
+    if(widget.znak=="."){if((state.tekst.isEmpty || state.tekst[state.tekst.length - 1] == ")"))c=true;}
+    if(widget.znak=="÷"){if((state.tekst.isEmpty || state.tekst[state.tekst.length - 1] == "("))c=true;}
+    if(widget.znak=="×"){if((state.tekst.isEmpty || state.tekst[state.tekst.length - 1] == "("))c=true;}
+    if(widget.znak=="+"){if((state.tekst.isEmpty || state.tekst[state.tekst.length - 1] == "("))c=true;}
+    if(widget.znak==")"){if((state.tekst.isEmpty || state.tekst[state.tekst.length - 1] == "("))c=true;
               int ile = 0;
               int value = state.tekst.length;
               for (int i = 0; i < value; i++) {
@@ -170,9 +175,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String usunNawiasy(String tekst){
     int ile = 0,start=-1,end=-1;
-    int value = tekst.length;
-    for (int i = 0; i < value; i++) {
-      if (tekst[i] == "(") ile++;
+    for (int i = 0; i < tekst.length; i++) {
+      if (tekst[i] == "(") {ile++;if(i+i<tekst.length&&tekst[i+1]=="-"){
+        tekst=tekst.substring(0,i)+"0"+tekst.substring(i);
+      }}
       if (tekst[i] == ")") ile--;
       if(ile!=0&&start==-1)start=i;
       if(ile==0&&start!=-1){end=i;
@@ -193,8 +199,9 @@ class _MyHomePageState extends State<MyHomePage> {
   String calculateTotalValue(String tekstBazowy) {
     String tekst = tekstBazowy;
     if(["×", "÷", "-", "+", "."].any((element){ if(tekst[tekst.length-1]==element)return true;return false;})){return "?";}
+    if(tekst=="?"||tekst =="(")return "?";
     tekst = usunNawiasy(tekst);
-    if(tekst=="?")return "?";
+    if(tekst=="?"||tekst =="(")return "?";
     List<double> liczby = [];
     String znaki = "";
     while (tekst != "") {
