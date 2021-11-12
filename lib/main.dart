@@ -114,6 +114,16 @@ class _MyButtonState extends State<MyButton> {
                         ["×", "÷", "-", "+","."][i]) c = true;
               }
             }
+            if(widget.znak == "."){
+              for(int i=state.tekst.length-1;i>0;i--){
+                bool czy=false;
+                for (int j = 0; j < 4; j++) {
+                  if (state.tekst[i] == ["×", "÷", "-", "+"][j]){czy = true; break;}
+                }
+                if(czy)break;
+                if(state.tekst[i]=="."){c = true; break;}
+              }
+            }
             if (!c) state.tekst += widget.znak;
           }
         }
@@ -207,7 +217,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     var state = Provider.of<Tekst>(context, listen: true);
     String tekst = "";
-    if (state.tekst != "" && state.tekst != "błąd") {
+    if (state.tekst != "") {
       tekst = calculateTotalValue();
     }
     return Scaffold(
@@ -248,7 +258,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const MyRow(lista: ["1", "2", "3","(", ")"]),
             const MyRow(lista: ["4", "5", "6", "+", "-"]),
             const MyRow(lista: ["7", "8", "9", "×", "÷"]),
-            const MyRow(lista: ["c", "0", "d","."," "]),
+            const MyRow(lista: ["c", "0", "d",".",""]),
           ],
         ),
       ),
