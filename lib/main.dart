@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter/services.dart';
 void main() => runApp(ChangeNotifierProvider.value(
       value: Tekst(),
       child: const MyApp(),
@@ -342,17 +342,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    var state = Provider.of<Tekst>(context, listen: true);
+  Widget build(BuildContext context) {SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarContrastEnforced: false,
+    statusBarColor: Colors.transparent,
+  ));
+  var state = Provider.of<Tekst>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.lightBlueAccent.shade700,
         elevation: 8,
         shadowColor: Colors.lightBlueAccent,
         title: Center(
           child: Text(
             widget.title,
             style: TextStyle(
-              shadows: [Shadow(
+              shadows: const [ Shadow(
                 color: Colors.black,
                 blurRadius: 2,
                 offset: Offset(1,1)
