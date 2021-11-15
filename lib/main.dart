@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
+
 void main() => runApp(ChangeNotifierProvider.value(
       value: Tekst(),
       child: const MyApp(),
@@ -182,7 +183,34 @@ class _MyButtonState extends State<MyButton> {
                 }
               }
             }
-            if (!c) state.tekst2 += widget.znak;
+            if (!c)
+              {state.tekst2 += widget.znak;}
+            else {
+              showModalBottomSheet<void>(
+                  isDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(color: Colors.blueGrey,
+                      padding: const EdgeInsets.only(bottom: 20, top: 20),
+                      child: Text(
+                        "Nieprawidłowy zapis",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 30,
+                            shadows: [
+                              Shadow(
+                                  color: Colors.blue.shade900,
+                                  blurRadius: 2,
+                                  offset: const Offset(1, 1)),
+                            ]),
+                      ),
+                    );
+                  });
+              Future.delayed(const Duration(milliseconds: 1500), () {
+                Navigator.of(context).pop();
+              });
+            }
           }
         }
       },
@@ -344,10 +372,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.transparent,
-    statusBarColor: Colors.black26,
-  ));
-  var state = Provider.of<Tekst>(context, listen: true);
+      systemNavigationBarColor: Colors.transparent,
+      statusBarColor: Colors.black26,
+    ));
+    var state = Provider.of<Tekst>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlueAccent.shade700,
@@ -357,11 +385,10 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Text(
             widget.title,
             style: TextStyle(
-              shadows: const [ Shadow(
-                color: Colors.black,
-                blurRadius: 2,
-                offset: Offset(1,1)
-              )],
+                shadows: const [
+                  Shadow(
+                      color: Colors.black, blurRadius: 2, offset: Offset(1, 1))
+                ],
                 fontSize: 31,
                 foreground: Paint()
                   ..shader = const LinearGradient(colors: [
@@ -405,7 +432,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Color(0xfff0f0f0)
                                 ],
                                 stops: [
-                                  0,0.2,0.4,1
+                                  0,
+                                  0.2,
+                                  0.4,
+                                  1
                                 ]),
                             border: Border(
                                 bottom:
