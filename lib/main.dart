@@ -342,9 +342,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarContrastEnforced: false,
-    statusBarColor: Colors.transparent,
+  Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.transparent,
+    statusBarColor: Colors.black26,
   ));
   var state = Provider.of<Tekst>(context, listen: true);
     return Scaffold(
