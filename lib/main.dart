@@ -301,9 +301,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   double zamienUNaMinus(String tekst,int y,bool dodatnia){
     if(tekst[0] == "u" || tekst[0] == "-")
-      return zamienUNaMinus(tekst.substring(1), y, !dodatnia);
-    if(dodatnia)return double.parse(tekst);
-    return -double.parse(tekst);
+      {return zamienUNaMinus(tekst.substring(1), y-1, !dodatnia);}
+    if(dodatnia)return double.parse(tekst.substring(0,y));
+    return -double.parse(tekst.substring(0,y));
   }
   String calculateTotalValue(String tekstBazowy) {
     String tekst = tekstBazowy;
