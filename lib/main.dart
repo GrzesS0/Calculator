@@ -183,14 +183,17 @@ class _MyButtonState extends State<MyButton> {
                 }
               }
             }
-            if (!c)
-              {state.tekst2 += widget.znak;}
-            else {
+            if (!c) {
+              state.tekst2 += widget.znak;
+            } else {
               showModalBottomSheet<void>(
-                  isDismissible: false,
                   context: context,
-                  builder: (BuildContext context) {
-                    return Container(color: Colors.blueGrey,
+                  builder: (BuildContext context) {BuildContext actulContext = context;
+                    Future.delayed(const Duration(milliseconds: 1500), () {
+                      if (actulContext == context) Navigator.of(context).pop();
+                    });
+                    return Container(
+                      color: Colors.blueGrey,
                       padding: const EdgeInsets.only(bottom: 20, top: 20),
                       child: Text(
                         "Nieprawidłowy zapis",
@@ -207,9 +210,6 @@ class _MyButtonState extends State<MyButton> {
                       ),
                     );
                   });
-              Future.delayed(const Duration(milliseconds: 1500), () {
-                Navigator.of(context).pop();
-              });
             }
           }
         }
@@ -299,12 +299,15 @@ class _MyHomePageState extends State<MyHomePage> {
     if (start != -1) return "?";
     return tekst;
   }
-  double zamienUNaMinus(String tekst,int y,bool dodatnia){
-    if(tekst[0] == "u" || tekst[0] == "-")
-      {return zamienUNaMinus(tekst.substring(1), y-1, !dodatnia);}
-    if(dodatnia)return double.parse(tekst.substring(0,y));
-    return -double.parse(tekst.substring(0,y));
+
+  double zamienUNaMinus(String tekst, int y, bool dodatnia) {
+    if (tekst[0] == "u" || tekst[0] == "-") {
+      return zamienUNaMinus(tekst.substring(1), y - 1, !dodatnia);
+    }
+    if (dodatnia) return double.parse(tekst.substring(0, y));
+    return -double.parse(tekst.substring(0, y));
   }
+
   String calculateTotalValue(String tekstBazowy) {
     String tekst = tekstBazowy;
     tekst = zamienMinusy(tekst);
@@ -337,7 +340,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (y == -1) y = tekst.length;
       if (y == 0) y = tekst.length;
       if (tekst[0] == "u" || tekst[0] == "-") {
-        liczby.add(zamienUNaMinus(tekst,y,true));
+        liczby.add(zamienUNaMinus(tekst, y, true));
       } else {
         liczby.add(double.parse(tekst.substring(0, y)));
       }
