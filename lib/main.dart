@@ -299,7 +299,12 @@ class _MyHomePageState extends State<MyHomePage> {
     if (start != -1) return "?";
     return tekst;
   }
-
+  double zamienUNaMinus(String tekst,int y,bool dodatnia){
+    if(tekst[0] == "u" || tekst[0] == "-")
+      {return zamienUNaMinus(tekst.substring(1), y-1, !dodatnia);}
+    if(dodatnia)return double.parse(tekst.substring(0,y));
+    return -double.parse(tekst.substring(0,y));
+  }
   String calculateTotalValue(String tekstBazowy) {
     String tekst = tekstBazowy;
     tekst = zamienMinusy(tekst);
@@ -332,7 +337,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (y == -1) y = tekst.length;
       if (y == 0) y = tekst.length;
       if (tekst[0] == "u" || tekst[0] == "-") {
-        liczby.add(-double.parse(tekst.substring(1, y)));
+        liczby.add(zamienUNaMinus(tekst,y,true));
       } else {
         liczby.add(double.parse(tekst.substring(0, y)));
       }
